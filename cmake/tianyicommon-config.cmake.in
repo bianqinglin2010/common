@@ -1,0 +1,39 @@
+cmake_minimum_required(VERSION 3.10)
+
+if(TARGET "tianyicommon_static")
+    return()
+endif()
+
+add_library(tianyicommon_static STATIC IMPORTED)
+
+# --------------------------------------------------------------------------- #
+
+# exported definitions
+set(TIANYICOMMON_USE_X86 @HPCC_USE_X86_64@)
+
+# --------------------------------------------------------------------------- #
+
+set(__TIANYICOMMON_PACKAGE_ROOTDIR__ "${CMAKE_CURRENT_LIST_DIR}/../../..")
+
+set_target_properties(tianyicommon_static PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/include")
+
+if(MSVC)
+    set_target_properties(tianyicommon_static PROPERTIES
+        IMPORTED_LOCATION "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/tianyicommon_static.lib"
+        IMPORTED_LOCATION_DEBUG "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/tianyicommon_static.lib"
+        IMPORTED_LOCATION_RELEASE "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/tianyicommon_static.lib")
+else()
+    set_target_properties(tianyicommon_static PROPERTIES
+        IMPORTED_LOCATION "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/libtianyicommon_static.a"
+        IMPORTED_LOCATION_DEBUG "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/libtianyicommon_static.a"
+        IMPORTED_LOCATION_RELEASE "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/lib/libtianyicommon_static.a")
+endif()
+
+# exported definitions
+set(TIANYICOMMON_INCLUDE_DIRS "${__TIANYICOMMON_PACKAGE_ROOTDIR__}/include")
+set(TIANYICOMMON_LIBRARIES "tianyicommon_static")
+
+# --------------------------------------------------------------------------- #
+
+unset(__TIANYICOMMON_PACKAGE_ROOTDIR__)
